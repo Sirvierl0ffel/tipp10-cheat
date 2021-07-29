@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "TIPP10 Cheat",
+  "version": "0.0.1",
+  "description": "Fakes lessons on tipp10.com!",
+  "author": "Sirvierl0ffel",
+
+  "web_accessible_resources": ["tipp10cheat.js"],
+
+  "content_scripts": [
+    {
+      "run_at": "document_end",
+      "matches": ["*://online.tipp10.com/*/training/"],
+      "js": ["injector.js"]
+    }
+  ],
+
+  "permissions": []
+}
