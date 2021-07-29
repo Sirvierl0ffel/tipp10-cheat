@@ -1,5 +1,6 @@
 // ==UserScript==
 // @name         TIPP10 Cheat
+// @name:de      TIPP10 Cheat
 // @namespace    http://tampermonkey.net/
 // @version      0.0.1
 // @description  Fakes lessons on tipp10.com!
@@ -31,7 +32,6 @@ let CHEAT_LOADED = false;
       a: "sqy",
       b: "gv n",
       c: "dxv f",
-      b: "gv n",
       d: "esfc",
       e: "wrd34",
       f: "rdgcv",
@@ -93,7 +93,6 @@ let CHEAT_LOADED = false;
       a: "sqy",
       b: "gv n",
       c: "dxv f",
-      b: "gv n",
       d: "esfc",
       e: "wrd34",
       f: "rdgcv",
@@ -866,11 +865,11 @@ let CHEAT_LOADED = false;
 
               let choices = map[c];
               if (choices == undefined) {
-                choices = "abcdefghijklmnopqrstuvwxyz";
+                choices = "abcdefghijklmnopqrstuvwxyz ,.1234567890";
               }
 
               let upper = c.toUpperCase();
-              if (upper === c) choices += c.toLowerCase();
+              if (upper === c) choices += c.toLowerCase() + c.toLowerCase();
 
               let choice = c;
               let tries = 0;
