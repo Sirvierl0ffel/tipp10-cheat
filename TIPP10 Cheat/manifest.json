@@ -1,9 +1,16 @@
 {
   "manifest_version": 2,
+
   "name": "TIPP10 Cheat",
-  "version": "0.0.1",
   "description": "Fakes lessons on tipp10.com!",
   "author": "Sirvierl0ffel",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "64": "icon64.png",
+    "128": "icon128.png"
+  },
+  "version": "0.0.1",
 
   "web_accessible_resources": ["tipp10cheat.js"],
 

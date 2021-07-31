@@ -2,128 +2,32 @@
 // @name         TIPP10 Cheat
 // @name:de      TIPP10 Cheat
 // @namespace    http://tampermonkey.net/
-// @version      0.0.1
+// @version      0.0.2
 // @description  Fakes lessons on tipp10.com!
+// @description:de Fake Lektionen auf tipp10.com!
 // @author       Sirvierl0ffel
 // @match        *://online.tipp10.com/*/training/
-// @icon         https://www.google.com/s2/favicons?domain=tipp10.com
+// @icon         https://i.imgur.com/zTDoadV.png
+// @icon64       https://i.imgur.com/L1SG5wo.png
 // @grant        none
 // ==/UserScript==
 
-let CHEAT_LOADED = false;
+// Icons: https://imgur.com/a/jZHMEQg
 
 /* globals $, TIPP10, language */
 
 (function () {
-  "use strict";
+  'use strict';
 
-  if (CHEAT_LOADED) return;
-
-  CHEAT_LOADED = true;
-
-  //console.info("Loaded TIPP10 Cheat v0.0.1");
-
-  const CHEAT_FIRE = decodeURI("%F0%9F%94%A5");
-
-  const KEY_NEIGHBOR_MAPS = {
-    def: {
-      " ": ".,",
-      "\u00B6": "., ",
-      a: "sqy",
-      b: "gv n",
-      c: "dxv f",
-      d: "esfc",
-      e: "wrd34",
-      f: "rdgcv",
-      g: "tfvb",
-      h: "gzbn",
-      i: "uok",
-      j: "hk",
-      k: "jl,",
-      l: "ka",
-      m: "n ",
-      n: "mj",
-      o: "ip",
-      p: "o",
-      q: "was",
-      r: "etf",
-      s: "awdxz",
-      t: "frg",
-      u: "uiy",
-      v: "bcg ",
-      w: "asdqe",
-      x: "ys",
-      y: "thu",
-      z: "xc",
-    },
-    de_qwertz_win: {
-      "<": ">ay",
-      ">": "<ay",
-      "^": "°\t1",
-      "°": "^\t1",
-      ",": ";m.,",
-      ";": ",:",
-      "-": "_.\u00F6\u00E4",
-      _: "-:",
-      "'": "#+*",
-      "#": "'+",
-      "+": "*#´",
-      " ": ".,\u00B6",
-      "\u00B6": "., ",
-      0: "=op9\u00DF",
-      1: "^2q!",
-      2: '"2qwe13',
-      3: "\u00A724wer",
-      4: "$35er",
-      5: "%46rt",
-      6: "&57t",
-      7: "/68u",
-      8: "(79",
-      9: ")80iop",
-      "=": "0OP9\u00DF",
-      "!": '1"Q°',
-      '"': "2qwe!\u00A7",
-      "\u00A7": '3"$wer',
-      $: "435ER",
-      "%": "5$&RT",
-      "& ": "6%/T",
-      "/": "7&(U",
-      "(": "8/)",
-      ")": "9(=IOP",
-      a: "sqy",
-      b: "gv n",
-      c: "dxv f",
-      d: "esfc",
-      e: "wrd34",
-      f: "rdgcv",
-      g: "tfvb",
-      h: "gzbn",
-      i: "uok",
-      j: "hk",
-      k: "jl,",
-      l: "k\u00F6,.",
-      m: "n, ",
-      n: "mj",
-      o: "ip",
-      p: "o\u00F6\u00FC+",
-      q: "was",
-      r: "etf",
-      s: "awdx",
-      t: "frg",
-      u: "uiz",
-      v: "bcg ",
-      w: "asdqe",
-      x: "ys<",
-      y: "xc<",
-      z: "thu",
-      "\u00FC": "\u00F6p\u00E4",
-      "\u00F6": "l\u00E4-",
-      "\u00E4": "\u00F6\u00FC#",
-    },
-  };
+  // Ensure the script was not already loaded
+  if (window.CHEAT_LOADED) return;
+  Object.defineProperty(window, 'CHEAT_LOADED', {
+    value: true,
+    writable: false,
+  });
 
   const CHEAT_CSS = `
-/* =========================== Cheat run ============================ */
+/* =========================== Run background ============================ */
 
 #cheat-background {
   display: none;
@@ -137,6 +41,10 @@ let CHEAT_LOADED = false;
   height: 100%;
 }
 
+
+
+/* Run state table */
+
 #cheat-run-table {
   width: 600px;
   background: rgba(0, 0, 0, 0.4);
@@ -145,50 +53,52 @@ let CHEAT_LOADED = false;
   border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
-#cheat-run-table td {
-  font-family: 'Courier New', 'Lucida Console', 'monospace', 'sans-serif';
-  font-size: 16px;
-  color: #ffffff;
-}
-
-
-/* ========================= Cheat table ========================== */
-  .cheat-run-table-label {
-  margin: 0px 5px 0px 5px;
-  text-align: right;
-}
-
-.cheat-run-table-data-cell {
-  padding-right: 20px;
-  width: 100%;
-  white-space: nowrap;
-}
-
-.cheat-lessons-done {
-  border: 1px solid #00b000;
-}
-
-.cheat-lesson-current {
-  border: 1px solid #ffff00;
-}
-
-.cheat-lessons-undone {
-  border: 1px solid #b00000;
-}
-
+/* Container with centered child */
 .center {
-  widht: 100%;
+  width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+/* Cell style */
+#cheat-run-table td {
+  font-family: 'Courier New', 'Lucida Console', 'monospace', 'sans-serif';
+  font-size: 16px;
+  color: #ffffff;
+}
+.cheat-run-table-label {
+  font-weight: normal;
+  text-align: right;
+  margin: 0px 5px 0px 5px;
+}
+.cheat-run-table-data-cell {
+  font-weight: normal;
+  white-space: nowrap;
+  padding-right: 20px;
+  width: 100%;
+}
+
+/* Lesson processing states */
+.cheat-lessons-done {
+  border: 1px solid #00b000;
+}
+.cheat-lesson-current {
+  border: 1px solid #ffff00;
+}
+.cheat-lessons-undone {
+  border: 1px solid #b00000;
+}
 
 
-/* ========================= Cheat panel ============================= */
+
+/* ============================== Cheat panel ============================== */
 
 #cheat {
+  color: black;
+  line-height: normal;
+  font-weight: normal;
   font-family: Roboto, Arial, sans-serif;
   background: #e8e8e8;
   user-select: none;
@@ -224,7 +134,7 @@ let CHEAT_LOADED = false;
 }
 
 
-/* Cheat settings */
+/* ============================ Cheat settings ============================= */
 #cheat-settings {
 }
 
@@ -237,7 +147,8 @@ let CHEAT_LOADED = false;
 
 #cheat-settings label {
   font-family: Arial;
-  font-weight: revert;
+  font-size: 13px;
+  font-weight: normal;
   margin-left: 5px;
   color: #000000;
   font-size: 14px;
@@ -245,10 +156,10 @@ let CHEAT_LOADED = false;
 
 #cheat-settings br {
   font-family: Arial;
-  font-weight: revert;
+  font-size: 14px;
+  font-weight: normal;
   margin-left: 5px;
   color: #000000;
-  font-size: 14px;
 }
 
 .cheat-input {
@@ -262,13 +173,12 @@ let CHEAT_LOADED = false;
   padding: 2px 2px 3px 6px;
   border: 1px solid #808080;
   border-radius: 2px;
+  box-sizing: border-box;
 }
-
 .cheat-input:invalid {
   background: #d8c8c8;
   border-color: #ff0000;
 }
-
 .cheat-input:disabled {
   color: #a0a0a0;
   border: 1px solid #b8b8b8;
@@ -279,27 +189,31 @@ let CHEAT_LOADED = false;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  position: absolute;
   width: 200px;
   height: 14px;
   font-size: 10px;
   color: #d80000;
 }
 
-
 /* Cheat panel bottom */
 #cheat-bottom {
+  margin-top: 8px;
   text-align: right;
   width: max;
 }
 
 #cheat-button {
+  color: black;
+  font-family: Calibri;
+  font-size: 14px;
   width: 80px;
   padding: 3px 3px 3px 3px;
 }
 `;
 
   const CHEAT_HTML = `
-  <div id="cheat-background">
+<div id="cheat-background">
   <div class="center">
     <table id="cheat-run-table">
       <tr>
@@ -393,597 +307,594 @@ let CHEAT_LOADED = false;
     <button id="cheat-button">Run</button>
   </div>
 </div>
+
 `;
 
+  // Keys near other keys for authentic errors, for now only German QWERZ for Windows is fully supported
+  const KEY_NEIGHBOR_MAPS = {
+    /* spell-checker: disable */
+    def: {
+      ' ': '.,',
+      '\u00B6': '., ',
+      'a': 'sqy',
+      'b': 'gv n',
+      'c': 'dxv f',
+      'd': 'esfc',
+      'e': 'wrd34',
+      'f': 'rdgcv',
+      'g': 'tfvb',
+      'h': 'gzbn',
+      'i': 'uok',
+      'j': 'hk',
+      'k': 'jl,',
+      'l': 'ka',
+      'm': 'n ',
+      'n': 'mj',
+      'o': 'ip',
+      'p': 'o',
+      'q': 'was',
+      'r': 'etf',
+      's': 'awdxz',
+      't': 'frg',
+      'u': 'uiy',
+      'v': 'bcg ',
+      'w': 'asdqe',
+      'x': 'ys',
+      'y': 'thu',
+      'z': 'xc',
+    },
+    de_qwertz_win: {
+      '<': '>ay',
+      '>': '<ay',
+      '^': '°\t1',
+      '°': '^\t1',
+      ',': ';m.,',
+      '.': '.,-',
+      ';': ',:',
+      '-': '_.\u00F6\u00E4',
+      '_': '-:',
+      "'": '#+*',
+      '#': "'+",
+      '+': '*#´',
+      ' ': '.,\u00B6',
+      '\u00B6': '., ',
+      '0': '=op9\u00DF',
+      '1': '^2q!',
+      '2': '"2qwe13',
+      '3': '\u00A724wer',
+      '4': '$35er',
+      '5': '%46rt',
+      '6': '&57t',
+      '7': '/68u',
+      '8': '(79',
+      '9': ')80iop',
+      '=': '0OP9\u00DF',
+      '!': '1"Q°',
+      '"': '2qwe!\u00A7',
+      '\u00A7': '3"$wer',
+      '$': '435ER',
+      '%': '5$&RT',
+      '& ': '6%/T',
+      '/': '7&(U',
+      '(': '8/)',
+      ')': '9(=IOP',
+      'a': 'sqy',
+      'b': 'gv n',
+      'c': 'dxv f',
+      'd': 'esfc',
+      'e': 'wrd34',
+      'f': 'rdgcv',
+      'g': 'tfvb',
+      'h': 'gzbn',
+      'i': 'uok',
+      'j': 'hk',
+      'k': 'jl,',
+      'l': 'k\u00F6,.',
+      'm': 'n, ',
+      'n': 'mj',
+      'o': 'ip',
+      'p': 'o\u00F6\u00FC+',
+      'q': 'was',
+      'r': 'etf',
+      's': 'awdx',
+      't': 'frg',
+      'u': 'uiz',
+      'v': 'bcg ',
+      'w': 'asdqe',
+      'x': 'ys<',
+      'y': 'xc<',
+      'z': 'thu',
+      '\u00FC': '\u00F6p\u00E4',
+      '\u00F6': 'l\u00E4-',
+      '\u00E4': '\u00F6\u00FC#',
+    },
+    /* spell-checker: enable */
+  };
+
+  const START_DELAY_MS = 10000; // Extra delay before starting
+  const MESSAGE_DURATION_MS = 5000; // Extra delay between lessons
+
   // Insert html
-  $("<style>").text(CHEAT_CSS).appendTo(document.head);
-  $("body").html(`${CHEAT_HTML}${$("body").html()}\n`);
+  $('<style>').text(CHEAT_CSS).appendTo(document.head);
+  $('body').html(CHEAT_HTML + $('body').html());
 
-  // TIPP10 presence
-  let show = false;
-
-  // Document state
+  let show = false; // TIPP10 presence
   let lastTitle;
-
-  // Constants
-  const START_DELAY_MS = 10000;
-  const SENT_DURATION_MS = 5000;
-
-  // Settings
-  let enabled = getCookie("cheatEnabled", "true") === "true";
-  let queue = [];
+  let enabled = getCookie('cheatEnabled', 'true') === 'true';
+  let queue = []; // Queue text field as integer array
 
   // Run variables
   let running = false;
   let canceled = false;
   let startMS = 0;
-  let completeMS = 0;
   let lessons = [];
-  let lessonIndex = 0;
+  let lessonIdx = 0;
   let totalDurationMS = 0;
+  let completeMS = 0;
 
-  // Link cookies to inputs
-  linkCookie("#cheat-strokes", "cheatStrokes");
-  linkCookie("#cheat-strokes-random", "cheatStrokesRandom");
-  linkCookie("#cheat-error", "cheatError");
-  linkCookie("#cheat-error-random", "cheatErrorRandom");
-  linkCookie("#cheat-interval", "cheatInterval");
-  linkCookie("#cheat-interval-random", "cheatIntervalRandom");
-  linkCookie("#cheat-duration", "cheatDuration");
-  linkCookie("#cheat-queue", "cheatQueue");
-  function linkCookie(selector, cookie) {
-    $(selector).val(getCookie(cookie, $(selector).val()));
-    $(selector).change(() => {
-      let v = $(selector).val();
-      if (v.length == 0) $(selector).setCustomValidity("Empty!");
-      if ($(selector).is(":invalid")) return;
-      setCookie(cookie, v);
-    });
-  }
-  // Read cookies
-  if (enabled && show) {
-    $("#cheat").css("display", "block");
-  } else {
-    $("#cheat").css("display", "none");
-  }
-
-  // Focus
-  $("#cheat").focus();
-
-  // Add key listener
-  $("body").on("keydown", (evt) => {
-    if (evt.key === "Home") {
-      if (running || !show) return;
-      enabled = !enabled;
-      $("#cheat").css("display", enabled ? "block" : "none");
-      setCookie("cheatEnabled", String(enabled));
-    }
-  });
-
-  // Add cheat queue change listener to parse queue numbers and give erros
-  $("#cheat-queue").change(() => {
-    let value = $("#cheat-queue").val();
-    value = value.trim().replace(/ +(?= )/g, ""); // Trim and remove double spaces
-
+  // Add cheat queue change listener to parse lesson numbers and provide custom validity
+  $('#cheat-queue').change(() => {
+    let value = $('#cheat-queue').val();
+    value = value.trim().replace(/ +(?= )/g, ''); // Trim and remove double spaces
     if (value.length === 0) {
-      queueErr("Empty!");
+      queueVal('Empty!');
       return;
     }
-
-    let lessonStrings = value.split(" ");
-
+    let lessonStrings = value.split(' ');
     queue = new Array(lessonStrings.length);
-
     for (let i = 0; i < lessonStrings.length; i++) {
       queue[i] = parseInt(lessonStrings[i]);
-      if (
-        isNaN(queue[i]) ||
-        lessonStrings[i].length != ("" + queue[i]).length
-      ) {
-        queueErr('No number: "' + lessonStrings[i] + '"');
+      if (isNaN(queue[i]) || lessonStrings[i].length != String(queue[i]).length) {
+        queueVal('No number: "' + lessonStrings[i] + '"');
         return;
       }
       if (queue[i] < 1) {
-        queueErr("To small lesson number: " + lessonStrings[i]);
+        queueVal('To small lesson number: ' + lessonStrings[i]);
         return;
       }
       if (queue[i] > 20) {
-        queueErr("To large lesson number: " + lessonStrings[i]);
+        queueVal('To large lesson number: ' + lessonStrings[i]);
         return;
       }
     }
-
-    queueErr("");
+    queueVal('');
   });
-  function queueErr(message) {
-    $("#cheat-queue")[0].setCustomValidity(message);
-    $("#cheat-queue-hint").text(message);
+  function queueVal(message) {
+    $('#cheat-queue')[0].setCustomValidity(message);
+    $('#cheat-queue-hint').text(message);
   }
 
-  // Stop button state
-  let stopHit;
-  let to;
+  // Input elements
+  let inputs = [
+    $('#cheat-strokes'),
+    $('#cheat-strokes-random'),
+    $('#cheat-error'),
+    $('#cheat-error-random'),
+    $('#cheat-interval'),
+    $('#cheat-interval-random'),
+    $('#cheat-duration'),
+    $('#cheat-queue'),
+  ];
 
-  function resetStop() {
-    stopHit = false;
-    $("#cheat-button").css("color", "black");
-    $("#cheat-button").html("Stop");
+  // Link cookies to input elements
+  for (let input of inputs) {
+    let cookie = input.prop('id').replace('-', '');
+    // Cooky stuff
+    input.val(getCookie(cookie, input.val()));
+    input.change(() => {
+      let v = input.val();
+
+      // Invalid when empty
+      if (v.length == 0) input[0].setCustomValidity('Empty!');
+      else if (input[0].validationMessage === 'Empty!') input[0].setCustomValidity('');
+
+      if (!input.is(':invalid')) setCookie(cookie, v);
+    });
+    input.keydown(() => input.change()); // Update validity when typing
   }
-
-  // Add start listener
-  $("#cheat-button").on("click", function () {
-    if (running) {
-      // Stop button state handling
-      if (!stopHit && !canceled) {
-        stopHit = true;
-        $("#cheat-button").css("color", "#cc0000");
-        $("#cheat-button").html("!Stop!");
-        to = setTimeout(resetStop, 3000);
-        return;
-      }
-      clearTimeout(to);
-      resetStop();
-
-      // Stop running
-      running = false;
-
-      // Revert document to normal mode
-      $("#cheat-strokes").prop("disabled", false);
-      $("#cheat-strokes-random").prop("disabled", false);
-      $("#cheat-error").prop("disabled", false);
-      $("#cheat-error-random").prop("disabled", false);
-      $("#cheat-interval").prop("disabled", false);
-      $("#cheat-interval-random").prop("disabled", false);
-      $("#cheat-duration").prop("disabled", false);
-      $("#cheat-queue").prop("disabled", false);
-      $("#cheat-background").css("display", "none");
-      $("#cheat-button").html("Run");
-      document.title = lastTitle;
-    } else {
-      // Check input and window state
-      $("#cheat-queue").change();
-      if (window.TIPP10 == undefined) return;
-      if (
-        $("#cheat-strokes").is(":invalid") ||
-        $("#cheat-strokes-random").is(":invalid") ||
-        $("#cheat-error").is(":invalid") ||
-        $("#cheat-error-random").is(":invalid") ||
-        $("#cheat-interval").is(":invalid") ||
-        $("#cheat-interval-random").is(":invalid") ||
-        $("#cheat-duration").is(":invalid") ||
-        $("#cheat-queue").is(":invalid")
-      ) {
-        return;
-      }
-
-      // Update document to running mode
-      $("#cheat-strokes").prop("disabled", true);
-      $("#cheat-strokes-random").prop("disabled", true);
-      $("#cheat-error").prop("disabled", true);
-      $("#cheat-error-random").prop("disabled", true);
-      $("#cheat-interval").prop("disabled", true);
-      $("#cheat-interval-random").prop("disabled", true);
-      $("#cheat-duration").prop("disabled", true);
-      $("#cheat-queue").prop("disabled", true);
-      $("#cheat-background").css("display", "block");
-      $("#cheat-button").html("Stop");
-      lastTitle = document.title;
-      let f = CHEAT_FIRE;
-      document.title = `${f}${f}${f}TIPP10${f}${f}${f}`;
-
-      // Prepare run varaibles
-      canceled = null;
-      running = true;
-      totalDurationMS = START_DELAY_MS;
-      lessons = new Array(queue.length);
-      for (let i = 0; i < queue.length; i++) {
-        lessons[i] = new Lesson(queue[i]);
-        if (i > 0) {
-          const lessonDurationMS = parseEl("#cheat-duration") * 60 * 1000;
-          const lessonIntervalMS = lessons[i].delay * 60 * 1000;
-          totalDurationMS +=
-            SENT_DURATION_MS + lessonDurationMS + lessonIntervalMS;
-        }
-      }
-      lessonIndex = 0;
-      startMS = Date.now();
-      completeMS = startMS + START_DELAY_MS - SENT_DURATION_MS;
-      updateLessons();
-    }
-  });
-
-  setInterval(tick, 50);
-
-  function tick() {
-    // Ensure TIPP10 instance exists
-    if (window.TIPP10 == undefined) {
-      if (running) {
-        if (!canceled) {
-          canceled = true;
-          clearTimeout(to);
-          resetStop();
-          $("#cheat-button").html("Done");
-          $("#cheat-info-state").html("[00:00:00] Error!");
-          $("#cheat-info-time").html("[00:00:00]");
-        }
-      } else if (show) {
-        show = false;
-        $("#cheat").css("display", "block");
-      }
-    } else if (!show) {
-      show = true;
-      if (enabled && show) {
-        $("#cheat").css("display", "block");
-      } else {
-        $("#cheat").css("display", "none");
-      }
-    }
-
-    if (canceled) return;
-    if (!running) return;
-
-    // Run lessons
-
-    let nowMS = Date.now();
-
-    $("#cheat-info-time").html(
-      "[" + formatMS2(totalDurationMS - nowMS + startMS) + "]"
-    );
-
-    if (nowMS - startMS < START_DELAY_MS) {
-      let timeLeft = formatMS2(START_DELAY_MS - nowMS + startMS);
-      $("#cheat-info-state").html("[" + timeLeft + "] Starting...");
-      return;
-    }
-
-    let lesson = lessons[lessonIndex];
-    if (!lesson.completed) {
-      let lessonDurationMS = 0;
-      let lessonIntervalMS = 0;
-
-      if (lessonIndex > 0) {
-        lessonDurationMS = parseEl("#cheat-duration") * 60 * 1000;
-        lessonIntervalMS = lesson.delay * 60 * 1000;
-
-        let pastMS = nowMS - completeMS;
-
-        if (pastMS < SENT_DURATION_MS) {
-          let timeLeft = formatMS2(SENT_DURATION_MS - pastMS);
-          $("#cheat-info-state").html("[" + timeLeft + "] Faked a lesson.");
-          return;
-        }
-        pastMS -= SENT_DURATION_MS;
-
-        if (pastMS < lessonIntervalMS) {
-          let timeLeft = formatMS2(lessonIntervalMS - pastMS);
-          $("#cheat-info-state").html(
-            "[" + timeLeft + "] Waiting for interval"
-          );
-          return;
-        }
-        pastMS -= lessonIntervalMS;
-
-        if (pastMS < lessonDurationMS) {
-          let timeLeft = formatMS2(lessonDurationMS - pastMS);
-          $("#cheat-info-state").html(
-            "[" + timeLeft + "] Waiting for lesson duration"
-          );
-          return;
-        }
-      }
-
-      lesson.complete();
-      completeMS += SENT_DURATION_MS + lessonIntervalMS + lessonDurationMS;
-      lessonIndex++;
-      updateLessons();
-      if (lessonIndex == lessons.length) {
-        canceled = true;
-        clearTimeout(to);
-        resetStop();
-        $("#cheat-button").html("Done");
-        $("#cheat-info-state").html("[00:00:00] Done!");
-        $("#cheat-info-time").html("[00:00:00]");
-      }
-    }
-  }
-
-  function formatMS2(millis) {
-    millis = Math.max(millis, 0);
-    let seconds = Math.floor(millis / 1000);
-    let minutes = Math.floor(seconds / 60);
-    let hours = Math.floor(minutes / 60);
-    seconds %= 60;
-    minutes %= 60;
-    return (
-      String(hours).padStart(2, "0") +
-      ":" +
-      String(minutes).padStart(2, "0") +
-      ":" +
-      String(seconds).padStart(2, "0")
-    );
-  }
-
-  function updateLessons() {
-    let done = "";
-    let current = "";
-    let undone = "";
-    for (let i = 0; i < lessonIndex; i++)
-      done += (i > 0 ? " " : "") + lessons[i].lessonID;
-    current =
-      lessonIndex < lessons.length ? String(lessons[lessonIndex].lessonID) : "";
-    for (let i = lessonIndex + 1; i < lessons.length; i++)
-      undone += (i > 0 ? " " : "") + lessons[i].lessonID;
-    if (done.length > 0)
-      done = '<span class="cheat-lessons-done">' + done + "</span> ";
-    if (current.length > 0)
-      current = '<span class="cheat-lesson-current">' + current + "</span>";
-    if (undone.length > 0)
-      undone = ' <span class="cheat-lessons-undone">' + undone + "</span>";
-    $("#cheat-info-lessons").html(done + current + undone);
-  }
-
-  function Lesson(lessonID) {
-    this.lessonID = lessonID;
-    this.delay = Math.floor(
-      random(
-        parseEl("#cheat-interval"),
-        parseEl("#cheat-interval-random"),
-        0,
-        300
-      )
-    );
-    this.completed = false;
-
-    this.complete = function () {
-      if (this.completed)
-        throw new Error("Tried to complete already completed lesson!");
-
-      this.completed = true;
-
-      let lessonDuration = parseEl("#cheat-duration");
-      let targetStrokesP10M = Math.floor(
-        random(
-          parseEl("#cheat-strokes"),
-          parseEl("#cheat-strokes-random"),
-          250,
-          100000
-        )
-      );
-      let targetErrorPct = random(
-        parseEl("#cheat-error"),
-        parseEl("#cheat-error-random"),
-        0,
-        100
-      );
-
-      let targetStrokeCount = Math.floor(
-        (targetStrokesP10M * lessonDuration) / 10
-      );
-
-      // Generate error indices
-      let errorIndices = new Array(targetStrokeCount);
-      for (let i = 0; i < errorIndices.length; i++) errorIndices[i] = i;
-      for (
-        let j, x, i = errorIndices.length;
-        i;
-        j = parseInt(Math.random() * i),
-          x = errorIndices[--i],
-          errorIndices[i] = errorIndices[j],
-          errorIndices[j] = x
-      );
-      errorIndices = errorIndices.slice(
-        0,
-        (targetStrokeCount * targetErrorPct) / 100
-      );
-
-      // console.info(`Strokes/10m:${targetStrokesP10M} Error%:${targetErrorPct.toFixed(2)},${errorIndices.toString()} Interval:${interval} Duration:${lessonDuration} ID:${lessonId}`);
-
-      // Make lesson text request
-      TIPP10.main.SR(
-        `/${language}/training/data/init/0/0/${lessonID}/0/`,
-        function (req) {
-          let data = JSON.parse(req.responseText);
-
-          let lines = data.lesson.split("\n");
-
-          let keyboardLayout = data.settings.user_keyboard;
-
-          // Type lines
-
-          let charCount = 0;
-          let strokeCount = 0;
-          let errorCount = 0;
-          let errorString = "";
-
-          let p_e = {};
-
-          let p_lc = "";
-
-          let line;
-          typeLoop: while (true) {
-            // Get new random line that is not equal to the last line
-            if (lines.length > 1) {
-              let newline = line;
-              while (newline === line) {
-                newline = lines[Math.floor(Math.random() * lines.length)];
-              }
-              line = newline;
-            }
-
-            // Type every characer in line
-            let lineReturned = line + "\u00B6";
-            for (let i = 0; i < lineReturned.length; i++) {
-              let c = lineReturned[i];
-
-              // Type error
-              if (errorIndices.includes(charCount)) {
-                let ec = generateError(lineReturned, i, c);
-
-                get(ec).ea++;
-                get(c).et++;
-                errorCount++;
-                addChar(ec);
-                errorString += "1";
-              }
-
-              // Occurences are actually counted before the char is typed
-              get(c).eo++;
-              charCount++;
-              addChar(c);
-              errorString += "0";
-
-              // Exit type loop if the target stroke count is reached
-              if (strokeCount >= targetStrokeCount) break typeLoop;
-            }
-          }
-
-          // Generates error for a line
-          function generateError(lineReturned, i, c) {
-            let doubled = 0.3;
-            let switched1 = 0.3;
-            let switched2 = 0.1;
-            if (Math.random() < doubled && i > 0 && lineReturned[i - 1] !== c) {
-              return lineReturned[i - 1];
-            } else if (
-              Math.random() < switched1 &&
-              i + 1 < lineReturned.length &&
-              lineReturned[i + 1] !== c
-            ) {
-              return lineReturned[i + 1];
-            } else if (
-              Math.random() < switched2 &&
-              i + 2 < lineReturned.length &&
-              lineReturned[i + 2] !== c
-            ) {
-              return lineReturned[i + 2];
-            } else {
-              let map = KEY_NEIGHBOR_MAPS[keyboardLayout];
-
-              if (map == undefined) {
-                map = KEY_NEIGHBOR_MAPS.def;
-              }
-
-              let choices = map[c];
-              if (choices == undefined) {
-                choices = "abcdefghijklmnopqrstuvwxyz ,.1234567890";
-              }
-
-              let upper = c.toUpperCase();
-              if (upper === c) choices += c.toLowerCase() + c.toLowerCase();
-
-              let choice = c;
-              let tries = 0;
-              while (choice === c) {
-                choice = choices[Math.floor(Math.random() * choices.length)];
-
-                // Can't find error, so just return a or s, depending on which is an error
-                if (tries++ > 50) {
-                  if (c === "a") return "s";
-                  return "a";
-                }
-              }
-              return choice;
-            }
-          }
-
-          // Adds a char to the lesson
-          function addChar(c) {
-            let code = c.charCodeAt(0);
-            if (data.layout[code][1] != 0) strokeCount++;
-            if (data.layout[code][2] != 0) strokeCount++;
-            strokeCount++;
-            p_lc += c;
-          }
-
-          // Gets occurrence and error stats for character
-          function get(c) {
-            let code = c.charCodeAt(0);
-            if (!p_e["" + code]) {
-              p_e["" + code] = {
-                eo: 0,
-                et: 0,
-                ea: 0,
-              };
-            }
-            return p_e["" + code];
-          }
-
-          // Make result request
-
-          let p_r = {
-            l: "" + lessonID,
-            ta: 0, // lesson task (?)
-            t: lessonDuration * 60,
-            c: charCount,
-            s: strokeCount,
-            e: errorCount,
-            le: errorString,
-
-            // settings
-            tt: "ticker", // ticker type (?)
-            dt: 0, // duration type, 0 = time
-            dv: "" + lessonDuration, // duration value (?minutes)
-            ec: 1, // error correction
-            eb: 0, // error sound
-            es: 0, // assistance keyboard
-            ak: 0, // assistance ...
-            ac: 0,
-            ah: 0,
-            ap: 0,
-            ab: 0,
-            ai: 1,
-            am: 0,
-          };
-
-          let p_ls = "";
-
-          // console.info('r=    ' + JSON.stringify(p_r));
-          // console.info('e=    ' + JSON.stringify(p_e));
-          // console.info('lc=   ' + encodeURI(p_lc));
-          // console.info('ls=   ' + encodeURI(p_ls));
-
-          TIPP10.main.SR(
-            `/${language}/training/data/result/`,
-            (req) => {},
-            `r=${JSON.stringify(p_r)}&e=${JSON.stringify(p_e)}&lc=${encodeURI(
-              p_lc
-            )}&ls=${encodeURI(p_ls)}`
-          );
-        }
-      );
-    };
-  }
-
   function setCookie(c_name, value) {
-    let c_value =
-      escape(value) +
-      "; expires=" +
-      new Date(2147483647 * 1000).toUTCString() +
-      " SameSite=None; Secure";
-    document.cookie = c_name + "=" + c_value;
+    let date = new Date(2147483647 * 1000).toUTCString();
+    let c_value = escape(value) + '; expires=' + date + ' SameSite=None; Secure';
+    document.cookie = c_name + '=' + c_value;
   }
-
   function getCookie(c_name, def) {
-    let i,
-      x,
-      y,
-      ARRcookies = document.cookie.split(";");
+    let i;
+    let x;
+    let y;
+    let ARRcookies = document.cookie.split(';');
     for (i = 0; i < ARRcookies.length; i++) {
-      x = ARRcookies[i].substr(0, ARRcookies[i].indexOf("="));
-      y = ARRcookies[i].substr(ARRcookies[i].indexOf("=") + 1);
-      x = x.replace(/^\s+|\s+$/g, "");
-      if (x == c_name) {
+      x = ARRcookies[i].substr(0, ARRcookies[i].indexOf('='));
+      y = ARRcookies[i].substr(ARRcookies[i].indexOf('=') + 1);
+      x = x.replace(/^\s+|\s+$/g, '');
+      if (x === c_name) {
         return unescape(y);
       }
     }
     return def;
   }
 
-  function parseEl(selector) {
-    return parseFloat($(selector).val());
+  refreshVis();
+  function refreshVis() {
+    $('#cheat').css('display', enabled && show ? 'block' : 'none');
+    $('#cheat').focus();
   }
 
-  function random(val, deviation, min, max) {
-    return Math.min(Math.max(val + Math.random() * deviation, min), max);
+  // Add toggle key listener
+  $('body').on('keydown', (evt) => {
+    if (evt.key === 'Home') {
+      if (running || !show) return;
+      enabled = !enabled;
+      refreshVis();
+      setCookie('cheatEnabled', String(enabled));
+    }
+  });
+
+  // Stop button state
+  let stopHit;
+  let to;
+  $('#cheat-button').on('click', () => {
+    if (running) {
+      // Stop button state handling
+      if (!stopHit && !canceled) {
+        stopHit = true;
+        $('#cheat-button').css('color', '#cc0000');
+        $('#cheat-button').html('!Stop!');
+        to = setTimeout(() => {
+          stopHit = false;
+          $('#cheat-button').css('color', 'black');
+          $('#cheat-button').html('Stop');
+        }, 3000);
+        return;
+      }
+      clearTimeout(to);
+      stopHit = false;
+      $('#cheat-button').css('color', 'black');
+      $('#cheat-button').html('Stop');
+
+      // Stop tick
+      running = false;
+
+      // Revert document to previous state
+      for (let input of inputs) input.prop('disabled', false);
+      $('#cheat-background').css('display', 'none');
+      $('#cheat-button').html('Run');
+      document.title = lastTitle;
+    } else {
+      // Check TIPP10 presence and input validity
+      if (window.TIPP10 == undefined) return;
+      for (let input of inputs) {
+        input.change();
+        if (input.is(':invalid')) return;
+      }
+
+      // Update document to running mode
+      for (let input of inputs) input.prop('true', false);
+      $('#cheat-background').css('display', 'block');
+      $('#cheat-button').html('Stop');
+      lastTitle = document.title;
+      document.title = '\uD83D\uDD25\uD83D\uDD25\uD83D\uDD25 TIPP10 \uD83D\uDD25\uD83D\uDD25\uD83D\uDD25'; // Light TIPP10 on fire
+
+      // Prepare run variables and lesson schedule
+      canceled = false;
+      running = true;
+      totalDurationMS = START_DELAY_MS;
+      lessons = new Array(queue.length);
+      lessonIdx = 0;
+      startMS = Date.now();
+      completeMS = startMS + START_DELAY_MS - MESSAGE_DURATION_MS;
+      for (let i = 0; i < queue.length; i++) {
+        let lessonId = queue[i];
+        let delayM = Math.floor(random('#cheat-interval', '#cheat-interval-random') + 0.1);
+        let durationM = parseEl('#cheat-duration');
+        let targetStrokesP10M = Math.floor(random('#cheat-strokes', '#cheat-strokes-random'));
+        let targetErrorPct = random('#cheat-error', '#cheat-error-random');
+        lessons[i] = new Lesson(targetStrokesP10M, targetErrorPct, delayM, durationM, lessonId);
+        if (i > 0) {
+          const durationMS = lessons[i].durationM * 60 * 1000;
+          const delayMS = lessons[i].delayM * 60 * 1000;
+          totalDurationMS += MESSAGE_DURATION_MS + durationMS + delayMS;
+        }
+      }
+      updateScheduleState();
+
+      // Element reading helper functions
+      function parseEl(selector) {
+        return parseFloat($(selector).val());
+      }
+      function random(valSelector, randomSelector) {
+        let val = parseEl(valSelector);
+        let add = parseEl(randomSelector);
+        let min = parseFloat($(valSelector).prop('min'));
+        let max = parseFloat($(valSelector).prop('max'));
+        return Math.min(Math.max(val + Math.random() * add, min), max);
+      }
+    }
+  });
+
+  setInterval(tick, 50);
+  function tick() {
+    // Ensure TIPP10 instance exists
+    if (window.TIPP10 == undefined) {
+      // When running, cancel run and display error
+      // After the now "Exit" button is hit, running will be false and the panel will disappear
+      if (running) {
+        if (!canceled) {
+          canceled = true;
+          clearTimeout(to);
+          stopHit = false;
+          $('#cheat-button').css('color', 'black');
+          $('#cheat-button').html('Exit');
+          $('#cheat-info-state').html('[00:00:00] Error: TIPP10 instance not found!');
+          $('#cheat-info-time').html('[00:00:00]');
+        }
+      } else if (show) {
+        show = false;
+        refreshVis();
+      }
+    } else if (!show) {
+      show = true;
+      refreshVis();
+    }
+
+    // Ensure a schedule is running
+    if (!running || canceled) return;
+
+    let nowMS = Date.now();
+
+    // Update total timer
+    $('#cheat-info-time').html('[' + formatMs(totalDurationMS - (nowMS - startMS)) + ']');
+
+    // Do nothing for the specified start delay
+    if (nowMS - startMS < START_DELAY_MS) {
+      let timeLeft = formatMs(START_DELAY_MS - (nowMS - startMS));
+      $('#cheat-info-state').html('[' + timeLeft + '] Starting');
+      return;
+    }
+
+    let lesson = lessons[lessonIdx];
+
+    if (!lesson.completed) {
+      let durationMs = 0;
+      let delayMs = 0;
+
+      // Apply delays, if the lesson is not the first one
+      if (lessonIdx > 0) {
+        durationMs = lesson.durationM * 60 * 1000;
+        delayMs = lesson.delayM * 60 * 1000;
+
+        let pastMs = nowMS - completeMS;
+
+        // Cancel completion for the "Faked a Lesson" message display duration
+        if (pastMs < MESSAGE_DURATION_MS) {
+          let timeLeft = formatMs(MESSAGE_DURATION_MS - pastMs);
+          $('#cheat-info-state').html('[' + timeLeft + '] Faked a Lesson');
+          return;
+        }
+        pastMs -= MESSAGE_DURATION_MS;
+
+        // Cancel completion for the delay of the last lesson
+        if (pastMs < delayMs) {
+          let timeLeft = formatMs(delayMs - pastMs);
+          $('#cheat-info-state').html('[' + timeLeft + '] Waiting for Interval');
+          return;
+        }
+        pastMs -= delayMs;
+
+        // Cancel completion for the lessons duration
+        if (pastMs < durationMs) {
+          let timeLeft = formatMs(durationMs - pastMs);
+          $('#cheat-info-state').html('[' + timeLeft + '] Waiting for Lesson Duration');
+          return;
+        }
+      }
+
+      // Complete lesson and go to next
+      lesson.complete();
+      completeMS += MESSAGE_DURATION_MS + delayMs + durationMs;
+      lessonIdx++;
+      updateScheduleState();
+
+      // End lesson, if lesson index is over the queues length
+      if (lessonIdx == lessons.length) {
+        canceled = true;
+        clearTimeout(to);
+        stopHit = false;
+        $('#cheat-button').css('color', 'black');
+        $('#cheat-button').html('Done');
+        $('#cheat-info-state').html('[00:00:00] Done!');
+        $('#cheat-info-time').html('[00:00:00]');
+      }
+    }
+  }
+
+  function formatMs(ms) {
+    let seconds = Math.floor(Math.max(ms, 0) / 1000);
+    let minutes = Math.floor(seconds / 60);
+    let hours = Math.floor(minutes / 60);
+    let hoursString = String(hours).padStart(2, '0');
+    let minutesString = String(minutes % 60).padStart(2, '0');
+    let secondsString = String(seconds % 60).padStart(2, '0');
+    return hoursString + ':' + minutesString + ':' + secondsString;
+  }
+
+  function updateScheduleState() {
+    let done = '';
+    let current = '';
+    let undone = '';
+    for (let i = 0; i < lessonIdx; i++) done += (i > 0 ? ' ' : '') + lessons[i].lessonId;
+    current = lessonIdx < lessons.length ? String(lessons[lessonIdx].lessonId) : '';
+    for (let i = lessonIdx + 1; i < lessons.length; i++) undone += (i > 0 ? ' ' : '') + lessons[i].lessonId;
+    if (done.length > 0) {
+      done = '<span class="cheat-lessons-done">' + done + '</span> ';
+    }
+    if (current.length > 0) {
+      current = '<span class="cheat-lesson-current">' + current + '</span>';
+    }
+    if (undone.length > 0) {
+      undone = ' <span class="cheat-lessons-undone">' + undone + '</span>';
+    }
+    $('#cheat-info-lessons').html(done + current + undone);
+  }
+
+  function Lesson(targetStrokesP10M, targetErrorPct, delayM, durationM, lessonId) {
+    this.delayM = delayM;
+    this.durationM = durationM;
+    this.lessonId = lessonId;
+    this.completed = false;
+
+    this.complete = function () {
+      if (this.completed) throw new Error('Tried to complete already completed lesson!');
+
+      this.completed = true;
+
+      let targetStrokeCount = Math.floor((targetStrokesP10M * durationM) / 10);
+
+      // Generate error indices
+      let errorIndices = new Array(targetStrokeCount);
+      for (let i = 0; i < errorIndices.length; i++) errorIndices[i] = i;
+      for (let j, x, i = errorIndices.length; i; j = parseInt(Math.random() * i), x = errorIndices[--i], errorIndices[i] = errorIndices[j], errorIndices[j] = x);
+      errorIndices = errorIndices.slice(0, (targetStrokeCount * targetErrorPct) / 100);
+
+      // Make lesson text request
+      TIPP10.main.SR(`/${language}/training/data/init/0/0/${lessonId}/0/`, function (req) {
+        let data = JSON.parse(req.responseText);
+
+        let layoutStrokes = data.layout; // Stroke count info
+        let lines = data.lesson.split('\n'); // Lines of this lesson
+        let keyboardLayout = data.settings.user_keyboard; // Selected keyboard layout
+
+        // Type lines
+        let charCount = 0;
+        let strokeCount = 0;
+        let errorCount = 0;
+        let errorString = '';
+
+        let p_e = {};
+
+        let p_lc = '';
+
+        let line;
+        typeLoop: while (true) {
+          // Get new random line that is not equal to the last
+          // one, if the lesson consists of multiple lines
+          if (lines.length > 1) {
+            let newLine = line;
+            while (newLine === line) {
+              newLine = lines[Math.floor(Math.random() * lines.length)];
+            }
+            line = newLine;
+          }
+
+          // Type every character and a pilcrow sign
+          let realLine = line + '\u00B6';
+          for (let i = 0; i < realLine.length; i++) {
+            let c = realLine[i];
+
+            // Type error
+            if (errorIndices.includes(charCount)) {
+              let ec = generateError(realLine, i, c);
+
+              get(ec).ea++;
+              get(c).et++;
+              errorCount++;
+              addChar(ec);
+              errorString += '1';
+            }
+
+            get(c).eo++;
+            charCount++;
+            addChar(c);
+            errorString += '0';
+
+            // Exit type loop if the target stroke count is reached
+            if (strokeCount >= targetStrokeCount) break typeLoop;
+          }
+        }
+
+        // Generates an authentic error for a character
+        function generateError(line, i, c) {
+          let doubled = 0.3; // Chances to type the last character
+          let switched1 = 0.3; // Chances to type the next character
+          let switched2 = 0.1; // Chances to type the next next character
+          if (Math.random() < doubled && i > 0 && line[i - 1] !== c) {
+            return line[i - 1];
+          } else if (Math.random() < switched1 && i + 1 < line.length && line[i + 1] !== c) {
+            return line[i + 1];
+          } else if (Math.random() < switched2 && i + 2 < line.length && line[i + 2] !== c) {
+            return line[i + 2];
+          } else {
+            let map = KEY_NEIGHBOR_MAPS[keyboardLayout] || KEY_NEIGHBOR_MAPS.def;
+            let choices = map[c] || 'abcdefghijklmnopqrstuvwxyz ,.1234567890'; // cspell:disable-line
+            let upper = c.toUpperCase();
+            if (upper === c) choices += upper + upper;
+            let error = c;
+            let tries = 0;
+            while (error === c) {
+              error = choices[Math.floor(Math.random() * choices.length)];
+              // Can't find error, so just return space or a, depending on which is an error
+              if (tries++ > 50) return c === ' ' ? 'a' : ' ';
+            }
+            return error;
+          }
+        }
+
+        // Adds a char to the lesson
+        function addChar(c) {
+          let code = c.charCodeAt(0);
+          if (layoutStrokes[code][1] != 0) strokeCount++;
+          if (layoutStrokes[code][2] != 0) strokeCount++;
+          strokeCount++;
+          p_lc += c;
+        }
+
+        // Gets occurrence and error stats object for character
+        function get(c) {
+          let code = c.charCodeAt(0);
+          if (!p_e[code]) {
+            p_e[code] = {
+              eo: 0,
+              et: 0,
+              ea: 0,
+            };
+          }
+          return p_e[code];
+        }
+
+        let p_r = {
+          // Lesson stats
+          l: String(lessonId),
+          ta: 0, // lesson task (?)
+          t: durationM * 60,
+          c: charCount,
+          s: strokeCount,
+          e: errorCount,
+          le: errorString,
+
+          // Lesson settings
+          tt: 'ticker', // (?)
+          dt: 0, // duration type, 0 = time
+          dv: String(durationM), // duration value
+          ec: 1, // error correction type, 1 = retype
+          eb: 0, // (?)
+          es: 0, // (?)
+          ak: 0, // (?)
+          ac: 0, // (?)
+          ah: 0, // (?)
+          ap: 0, // (?)
+          ab: 0, // (?)
+          ai: 1, // (?)
+          am: 0, // (?)
+        };
+
+        let p_ls = ''; // (?)
+
+        // Make result request
+        let r = JSON.stringify(p_r);
+        let e = JSON.stringify(p_e);
+        let lc = encodeURIComponent(p_lc);
+        let ls = encodeURIComponent(p_ls);
+        TIPP10.main.SR(`/${language}/training/data/result/`, () => {}, `r=${r}&e=${e}&lc=${lc}&ls=${ls}`);
+      });
+    };
   }
 })();
