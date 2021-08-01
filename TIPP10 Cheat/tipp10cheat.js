@@ -2,7 +2,7 @@
 // @name         TIPP10 Cheat
 // @name:de      TIPP10 Cheat
 // @namespace    http://tampermonkey.net/
-// @version      0.0.2
+// @version      0.0.3
 // @description  Fakes lessons on tipp10.com!
 // @description:de Fake Lektionen auf tipp10.com!
 // @author       Sirvierl0ffel
@@ -25,6 +25,8 @@
     value: true,
     writable: false,
   });
+
+  const CHEAT_VERSION = '0.0.3';
 
   const CHEAT_CSS = `
 /* =========================== Run background ============================ */
@@ -248,7 +250,7 @@
   <div id="cheat-bar">
     <div id="cheat-title">TIPP10 Cheat</div>
     <hr id="cheat-title-line" />
-    <div id="cheat-subtitle">by Sirvierl0ffel</div>
+    <div id="cheat-subtitle">${CHEAT_VERSION} by Sirvierl0ffel</div>
   </div>
 
   <div id="cheat-settings">
@@ -266,7 +268,7 @@
 
       <tr>
         <td>
-          <label for="cheat-error">Error%</label><br />
+          <label for="cheat-error">Error %</label><br />
           <input id="cheat-error" class="cheat-input" type="number" value="0" step="1" min="0" max="100" />
         </td>
         <td>
@@ -277,7 +279,7 @@
 
       <tr>
         <td>
-          <label for="cheat-interval">Interval</label><br />
+          <label for="cheat-interval">Interval (m)</label><br />
           <input id="cheat-interval" class="cheat-input" type="number" value="0" step="1" min="0" max="300" />
         </td>
         <td>
