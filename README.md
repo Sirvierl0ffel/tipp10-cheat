@@ -3,7 +3,7 @@
 <h2>Fake lessons on tipp10.com!</h2>
 <p>This script allows you to schedule TIPP10 lessons.</p>
 <p>You can choose which results you want, from <strong>strokes per 10 minutes</strong> to <strong>error percentage</strong> and even <strong>interval between lessons</strong>. You can also randomize these parameters.</p>
-<p>Feel free to ask questions or report bugs on my Discord, Windows 7#9251.</p>
+<p>Feel free to ask questions or report bugs on my <a href="https://greasyfork.org/en/scripts/430017-tipp10-cheat">Greasyfork</a>.</p>
 
 <h3>Install Options</h3>
 
