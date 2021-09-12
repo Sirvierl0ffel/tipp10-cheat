@@ -2,7 +2,7 @@
 // @name         TIPP10 Cheat
 // @name:de      TIPP10 Cheat
 // @namespace    http://tampermonkey.net/
-// @version      0.0.3
+// @version      0.0.4
 // @description  Fakes lessons on tipp10.com!
 // @description:de Fake Lektionen auf tipp10.com!
 // @author       Sirvierl0ffel
@@ -26,8 +26,9 @@
     writable: false,
   });
 
-  const CHEAT_VERSION = '0.0.3';
+  const CHEAT_VERSION = '0.0.4';
 
+  //#region HTML
   const CHEAT_CSS = `
 /* =========================== Run background ============================ */
 
@@ -250,7 +251,7 @@
   <div id="cheat-bar">
     <div id="cheat-title">TIPP10 Cheat</div>
     <hr id="cheat-title-line" />
-    <div id="cheat-subtitle">${CHEAT_VERSION} by Sirvierl0ffel</div>
+    <div id="cheat-subtitle">v${CHEAT_VERSION} by Sirvierl0ffel</div>
   </div>
 
   <div id="cheat-settings">
@@ -311,6 +312,7 @@
 </div>
 
 `;
+  //#endregion
 
   // Keys near other keys for authentic errors, for now only German QWERZ for Windows is fully supported
   const KEY_NEIGHBOR_MAPS = {
@@ -570,7 +572,7 @@
       }
 
       // Update document to running mode
-      for (let input of inputs) input.prop('true', false);
+      for (let input of inputs) input.prop('disabled', true);
       $('#cheat-background').css('display', 'block');
       $('#cheat-button').html('Stop');
       lastTitle = document.title;
