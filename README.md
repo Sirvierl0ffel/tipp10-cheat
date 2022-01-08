@@ -1,4 +1,4 @@
-# TIPP10 Cheat v0.0.4
+# TIPP10 Cheat v0.0.5
 
 <h2>Fake lessons on tipp10.com!</h2>
 <p>This script allows you to schedule TIPP10 lessons.</p>
