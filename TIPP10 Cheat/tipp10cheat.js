@@ -2,7 +2,7 @@
 // @name         TIPP10 Cheat
 // @name:de      TIPP10 Cheat
 // @namespace    http://tampermonkey.net/
-// @version      0.0.4
+// @version      0.0.5
 // @description  Fakes lessons on tipp10.com!
 // @description:de Fake Lektionen auf tipp10.com!
 // @author       Sirvierl0ffel
@@ -26,7 +26,7 @@
     writable: false,
   });
 
-  const CHEAT_VERSION = '0.0.4';
+  const CHEAT_VERSION = '0.0.5';
 
   //#region HTML
   const CHEAT_CSS = `
@@ -314,7 +314,7 @@
 `;
   //#endregion
 
-  // Keys near other keys for authentic errors, for now only German QWERZ for Windows is fully supported
+  // Keys near other keys for authentic errors, for now only German QWERTZ for Windows is fully supported
   const KEY_NEIGHBOR_MAPS = {
     /* spell-checker: disable */
     def: {
@@ -760,7 +760,7 @@
       errorIndices = errorIndices.slice(0, (targetStrokeCount * targetErrorPct) / 100);
 
       // Make lesson text request
-      TIPP10.main.SR(`/${language}/training/data/init/0/0/${lessonId}/0/`, function (req) {
+      TIPP10.main._t131(`/${language}/training/data/init/0/0/${lessonId}/0/`, function (req) {
         let data = JSON.parse(req.responseText);
 
         let layoutStrokes = data.layout; // Stroke count info
@@ -897,7 +897,7 @@
         let e = JSON.stringify(p_e);
         let lc = encodeURIComponent(p_lc);
         let ls = encodeURIComponent(p_ls);
-        TIPP10.main.SR(`/${language}/training/data/result/`, () => {}, `r=${r}&e=${e}&lc=${lc}&ls=${ls}`);
+        TIPP10.main._t131(`/${language}/training/data/result/`, () => {}, `r=${r}&e=${e}&lc=${lc}&ls=${ls}`);
       });
     };
   }
