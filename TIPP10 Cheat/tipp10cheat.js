@@ -2,7 +2,7 @@
 // @name         TIPP10 Cheat
 // @name:de      TIPP10 Cheat
 // @namespace    http://tampermonkey.net/
-// @version      0.0.5
+// @version      0.0.6
 // @description  Fakes lessons on tipp10.com!
 // @description:de Fake Lektionen auf tipp10.com!
 // @author       Sirvierl0ffel
@@ -26,7 +26,7 @@
     writable: false,
   });
 
-  const CHEAT_VERSION = '0.0.5';
+  const CHEAT_VERSION = '0.0.6';
 
   //#region HTML
   const CHEAT_CSS = `
@@ -865,6 +865,8 @@
         }
 
         let p_r = {
+          csrf: data.csrf,
+
           // Lesson stats
           l: String(lessonId),
           ta: 0, // lesson task (?)
