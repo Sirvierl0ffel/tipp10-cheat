@@ -2,7 +2,7 @@
 // @name         TIPP10 Cheat
 // @name:de      TIPP10 Cheat
 // @namespace    http://tampermonkey.net/
-// @version      0.0.6
+// @version      0.0.7
 // @description  Fakes lessons on tipp10.com!
 // @description:de Fake Lektionen auf tipp10.com!
 // @author       Sirvierl0ffel
@@ -26,7 +26,7 @@
     writable: false,
   });
 
-  const CHEAT_VERSION = '0.0.6';
+  const CHEAT_VERSION = '0.0.7';
 
   //#region HTML
   const CHEAT_CSS = `
@@ -845,8 +845,10 @@
         // Adds a char to the lesson
         function addChar(c) {
           let code = c.charCodeAt(0);
-          if (layoutStrokes[code][1] != 0) strokeCount++;
-          if (layoutStrokes[code][2] != 0) strokeCount++;
+          if (layoutStrokes[code]) {
+            if (layoutStrokes[code][1] != 0) strokeCount++;
+            if (layoutStrokes[code][2] != 0) strokeCount++;
+          }
           strokeCount++;
           p_lc += c;
         }
