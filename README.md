@@ -18,5 +18,5 @@
 
 <!-- Screenshots: https://imgur.com/a/BKq9Dcx -->
 <h3>Screenshots with Description</h3>
-<img src="https://i.imgur.com/YfwuNgK.png"></img>
+<img src="https://i.imgur.com/AKLcvRS.png"></img>
 <img src="https://i.imgur.com/dB4R5Co.png"></img>
